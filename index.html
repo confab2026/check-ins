@@ -74,37 +74,11 @@
   }
 
   .hero { text-align: center; margin-bottom: 40px; position: relative; }
-  .yfmh {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(13px, 2.2vw, 19px);
-    color: var(--pink); letter-spacing: 3px; line-height: 1.5;
-  }
-  .sangath {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(10px, 1.6vw, 13px);
-    color: var(--navy); letter-spacing: 4px; margin: 14px 0 10px; line-height: 1.6;
-  }
-  .presents {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(10px, 1.6vw, 13px);
-    color: var(--soft-navy); letter-spacing: 4px; margin: 0 0 22px; line-height: 1.6;
-  }
-  h1 {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(22px, 5vw, 42px);
-    color: var(--navy);
-    text-shadow: 6px 6px 0 var(--pink);
-    line-height: 1.2; letter-spacing: 1px; margin: 0 0 14px;
-  }
-  .subtitle {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(13px, 2.2vw, 18px);
-    color: var(--pink);
-    letter-spacing: 3px;
-    margin: 6px 0 0;
-    line-height: 1.7;
-    text-shadow: 2px 2px 0 rgba(255, 107, 157, 0.25);
-  }
+  .yfmh { font-family: 'Press Start 2P', monospace; font-size: clamp(13px, 2.2vw, 19px); color: var(--pink); letter-spacing: 3px; line-height: 1.5; }
+  .sangath { font-family: 'Press Start 2P', monospace; font-size: clamp(10px, 1.6vw, 13px); color: var(--navy); letter-spacing: 4px; margin: 14px 0 10px; line-height: 1.6; }
+  .presents { font-family: 'Press Start 2P', monospace; font-size: clamp(10px, 1.6vw, 13px); color: var(--soft-navy); letter-spacing: 4px; margin: 0 0 22px; line-height: 1.6; }
+  h1 { font-family: 'Press Start 2P', monospace; font-size: clamp(22px, 5vw, 42px); color: var(--navy); text-shadow: 6px 6px 0 var(--pink); line-height: 1.2; letter-spacing: 1px; margin: 0 0 14px; }
+  .subtitle { font-family: 'Press Start 2P', monospace; font-size: clamp(13px, 2.2vw, 18px); color: var(--pink); letter-spacing: 3px; margin: 6px 0 0; line-height: 1.7; text-shadow: 2px 2px 0 rgba(255, 107, 157, 0.25); }
   .subtitle .star-icon { color: var(--pink); font-size: 0.9em; margin: 0 6px; vertical-align: 1px; }
 
   .view { display: none; }
@@ -149,7 +123,6 @@
     font-family: 'VT323', monospace; font-size: 22px;
     color: var(--navy); margin-bottom: 14px; line-height: 1.5; letter-spacing: 0.5px;
   }
-  .box p strong { color: var(--rose); }
 
   .field { margin-bottom: 22px; }
   .label {
@@ -314,10 +287,7 @@
     .yfmh { font-size: 12px; letter-spacing: 1.5px; }
     .sangath, .presents { font-size: 9px; letter-spacing: 2px; }
     .subtitle { font-size: 10px; letter-spacing: 1.5px; }
-    .subtitle .star-icon { margin: 0 3px; }
     .box { padding: 20px 16px; }
-    .box h2 { font-size: 9px; }
-    .box p { font-size: 21px; }
     .label { font-size: 10px; letter-spacing: 0.8px; }
     .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
     .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
@@ -328,25 +298,6 @@
     .result .r-phone { font-size: 19px; }
     .result .r-note { font-size: 18px; }
     .status-line, .footer { font-size: 18px; }
-  }
-
-  @media (max-height: 520px) and (orientation: landscape) {
-    body { padding: 16px 0 24px; padding-top: max(16px, env(safe-area-inset-top)); }
-    .hero { margin-bottom: 18px; }
-    h1 { font-size: 24px; margin-bottom: 6px; }
-    .yfmh { font-size: 12px; }
-    .sangath, .presents { margin: 8px 0 6px; }
-    .subtitle { font-size: 11px; }
-    .box { padding: 18px 16px; margin-bottom: 16px; }
-    .field { margin-bottom: 14px; }
-    .label { font-size: 11px; }
-    .input { min-height: 52px; font-size: 26px; }
-    .btn { min-height: 56px; padding: 16px; }
-  }
-
-  @media (hover: none) {
-    .box:hover { box-shadow: 7px 7px 0 var(--navy); transform: none; }
-    .box::before { transform: rotate(-3deg); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -414,7 +365,7 @@
 (function () {
   'use strict';
 
-  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby2nSQ3yIiwK_fJVahTv57751qfl49KpiMPwv9gQCLmNVFh6syx7rPofrDLgk6HJnaAgQ/exec';
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbx_H8KAGz3zZ33s4rWrX2qDAH9biHsPa7-xHqZ6XmZ0abviSBtTKMPXnuBy-oXPC2RacQ/exec';
 
   async function submitCheckIn(name, phone) {
     const res = await fetch(BACKEND_URL, {
@@ -481,7 +432,7 @@
           'Couldn\'t find that name and phone combo. Double check your details, or pop by the registration desk. ★');
       } else {
         showCheckInResult('err', '✗ SOMETHING WENT WRONG', '✗', '', '',
-          'Something glitched on our end. Try again, or ask at the registration desk. ★');
+          (out.message || 'Something glitched on our end. Try again, or ask at the registration desk. ★'));
       }
     } catch (err) {
       console.error("Fetch error:", err);
