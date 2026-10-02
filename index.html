@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#FFF6E0">
+<title>Confab 2026 · Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --yellow: #FFD93D; --navy: #1B2A5E; --pink: #FF6B9D; --rose: #C74B7C;
+    --teal: #4ECDC4; --soft-navy: #4A5D8A; --green: #2FBF71;
+    --cream: #FFF6E0; --white: #FFFDF5;
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'Pixelify Sans', sans-serif;
+    background-color: var(--cream);
+    background-image: radial-gradient(rgba(27, 42, 94, 0.14) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    color: var(--navy);
+    padding: 40px 0 70px;
+    font-size: 22px;
+    line-height: 1.55;
+    overscroll-behavior-y: none;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 0 26px; }
+
+  .hero { text-align: center; margin-bottom: 40px; }
+  .yfmh {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(13px, 2.2vw, 19px);
+    color: var(--pink); letter-spacing: 3px; line-height: 1.5;
+  }
+  .sangath {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 1.6vw, 13px);
+    color: var(--navy); letter-spacing: 4px; margin: 14px 0 10px; line-height: 1.6;
+  }
+  .presents {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 1.6vw, 13px);
+    color: var(--soft-navy); letter-spacing: 4px; margin: 0 0 22px; line-height: 1.6;
+  }
+  h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(22px, 5vw, 42px);
+    color: var(--navy);
+    text-shadow: 6px 6px 0 var(--pink);
+    line-height: 1.2; letter-spacing: 1px; margin: 0 0 14px;
+  }
+  .subtitle {
+    font-family: 'VT323', monospace; font-size: 24px;
+    color: var(--rose); letter-spacing: 0.5px; margin: 0;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .box {
+    background: var(--white);
+    border: 3px solid var(--navy);
+    box-shadow: 7px 7px 0 var(--navy);
+    padding: 26px 22px;
+    margin-bottom: 24px;
+  }
+  .box h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px; color: var(--navy); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 16px; padding-bottom: 14px;
+    border-bottom: 4px solid var(--pink); line-height: 1.6;
+  }
+  .box p {
+    font-family: 'VT323', monospace; font-size: 22px;
+    color: var(--navy); margin-bottom: 14px; line-height: 1.5; letter-spacing: 0.5px;
+  }
+
+  .field { margin-bottom: 20px; }
+  .label {
+    display: block;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px; color: var(--navy); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .input {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: var(--navy);
+    background: var(--cream);
+    border: 3px solid var(--navy);
+    outline: none; -webkit-appearance: none; border-radius: 0;
+    letter-spacing: 0.5px; line-height: 1.4;
+  }
+  .input:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.25);
+  }
+  .input::placeholder { color: var(--navy); opacity: 0.35; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px; padding: 18px 22px;
+    background: var(--pink); color: var(--white);
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.08s, box-shadow 0.08s, background 0.12s, color 0.12s;
+    touch-action: manipulation; min-height: 56px; user-select: none;
+    width: 100%; line-height: 1.3; text-align: center;
+  }
+  .btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--navy); }
+  @media (hover: hover) {
+    .btn:hover { background: var(--navy); color: var(--yellow); transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--navy); }
+    .btn.secondary:hover { background: var(--yellow); color: var(--navy); }
+    .btn.teal:hover { background: var(--navy); color: var(--teal); }
+  }
+  .btn.secondary { background: var(--white); color: var(--navy); }
+  .btn.teal { background: var(--teal); color: var(--navy); }
+  .btn[disabled] { opacity: 0.55; cursor: wait; }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .btn-row .btn { flex: 1 1 200px; width: auto; }
+
+  .result {
+    display: none;
+    padding: 30px 22px;
+    border: 3px solid var(--navy);
+    box-shadow: 7px 7px 0 var(--navy);
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1.5;
+    background: var(--white);
+  }
+  .result.show { display: block; }
+  .result .r-icon { font-family: 'Press Start 2P', monospace; font-size: 32px; line-height: 1; margin-bottom: 18px; }
+  .result .r-title { font-family: 'Press Start 2P', monospace; font-size: 14px; letter-spacing: 1px; line-height: 1.7; margin-bottom: 14px; }
+  .result .r-name { font-family: 'Pixelify Sans', sans-serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .result .r-phone { font-family: 'VT323', monospace; font-size: 22px; letter-spacing: 0.5px; opacity: 0.9; }
+  .result .r-note { font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 0.5px; opacity: 0.85; margin-top: 12px; }
+  .result.ok { border-color: var(--green); box-shadow: 7px 7px 0 var(--green); }
+  .result.ok .r-title, .result.ok .r-icon { color: var(--green); }
+  .result.err { border-color: var(--rose); box-shadow: 7px 7px 0 var(--rose); }
+  .result.err .r-title, .result.err .r-icon { color: var(--rose); }
+  .result.warn { border-color: var(--yellow); box-shadow: 7px 7px 0 var(--yellow); }
+  .result.warn .r-title, .result.warn .r-icon { color: var(--yellow); }
+
+  .status-line {
+    font-family: 'VT323', monospace; font-size: 20px;
+    color: var(--soft-navy); text-align: center;
+    margin-top: 16px; letter-spacing: 0.5px; min-height: 26px;
+  }
+
+  .footer {
+    text-align: center;
+    font-family: 'VT323', monospace; font-size: 20px;
+    color: var(--soft-navy); margin-top: 48px;
+    opacity: 0.7; letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 24px 0 60px; font-size: 20px; }
+    .wrap { padding: 0 16px; }
+    .hero { margin-bottom: 32px; }
+    h1 { text-shadow: 4px 4px 0 var(--pink); }
+    .subtitle { font-size: 22px; }
+    .box { padding: 22px 18px; }
+    .box h2 { font-size: 10px; }
+    .btn { font-size: 10px; padding: 16px 18px; min-height: 52px; }
+    .btn-row .btn { flex: 1 1 100%; }
+    .result .r-title { font-size: 12px; }
+    .result .r-icon { font-size: 26px; }
+    .result .r-name { font-size: 22px; }
+    .result .r-phone { font-size: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="yfmh">YOUTH FOR MENTAL HEALTH</p>
+    <p class="sangath">IN ASSOCIATION WITH SANGATH</p>
+    <p class="presents">★ PRESENTS ★</p>
+    <h1>CONFAB 2026</h1>
+    <p class="subtitle">Attendee Check-In</p>
+  </header>
+
+  <div class="view active" id="view-attendee">
+
+    <div class="result" id="checkin-result">
+      <div class="r-icon" id="checkin-icon"></div>
+      <div class="r-title" id="checkin-title"></div>
+      <div class="r-name" id="checkin-name"></div>
+      <div class="r-phone" id="checkin-phone"></div>
+      <div class="r-note" id="checkin-note"></div>
+    </div>
+
+    <div class="box" id="checkin-form-box">
+      <h2>Check Yourself In</h2>
+      <p>Enter your full name and phone number exactly as registered.</p>
+
+      <div class="field">
+        <label class="label" for="c-name">Full Name</label>
+        <input class="input" type="text" id="c-name" placeholder="e.g. Priya Sharma" autocomplete="name">
+      </div>
+      <div class="field">
+        <label class="label" for="c-phone">Phone Number</label>
+        <input class="input" type="tel" inputmode="numeric" id="c-phone" placeholder="e.g. 9876543210" autocomplete="tel">
+      </div>
+
+      <button class="btn" id="btn-checkin">Check Me In</button>
+      <div class="status-line" id="attendee-status"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">Confab 2026 · Check-In System</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyV-FLKar609Ih2w3ASzn1bJRTnO7UFxGnE994sUhlFLZySTC_jbaRsoqe4btJ6okn-NA/exec';
+
+  async function submitCheckIn(name, phone) {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'checkin', name: name, phone: phone })
+    });
+    if (!res.ok) throw new Error('Network error');
+    return await res.json();
+  }
+
+  function showCheckInResult(kind, title, icon, name, phone, note) {
+    const box = document.getElementById('checkin-result');
+    document.getElementById('checkin-title').textContent = title;
+    document.getElementById('checkin-icon').textContent = icon || '';
+    document.getElementById('checkin-name').textContent = name || '';
+    document.getElementById('checkin-phone').textContent = phone || '';
+    document.getElementById('checkin-note').textContent = note || '';
+    box.classList.remove('ok', 'err', 'warn');
+    box.classList.add(kind, 'show');
+    document.getElementById('checkin-form-box').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setStatus(msg, isError) {
+    const el = document.getElementById('attendee-status');
+    el.textContent = msg || '';
+    el.style.color = isError ? 'var(--rose)' : 'var(--soft-navy)';
+  }
+
+  async function handleSubmit() {
+    const nameEl = document.getElementById('c-name');
+    const phoneEl = document.getElementById('c-phone');
+    const btn = document.getElementById('btn-checkin');
+    const name = nameEl.value.trim();
+    const phone = phoneEl.value.trim();
+
+    if (!name || !phone) {
+      showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
+        'Please enter both your name and phone number.');
+      return;
+    }
+
+    btn.disabled = true;
+    setStatus('Checking…');
+
+    try {
+      const out = await submitCheckIn(name, phone);
+      if (out.ok) {
+        showCheckInResult('ok', '✓ CHECKED IN', '✓', out.name, 'Phone: ' + out.phone,
+          'You are checked in. See you at Confab 2026!');
+      } else if (out.reason === 'already') {
+        showCheckInResult('warn', '⚠ ALREADY CHECKED IN', '⚠',
+          out.name || name, out.phone ? 'Phone: ' + out.phone : '',
+          'You have already been checked in.');
+      } else if (out.reason === 'not_found') {
+        showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
+          "We couldn't find this name and phone in the attendee list. Please check your details or speak to the registration desk.");
+      } else {
+        showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
+          'Something went wrong. Please speak to the registration desk.');
+      }
+    } catch (err) {
+      showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
+        'Could not reach the check-in server. Please speak to the registration desk.');
+    } finally {
+      btn.disabled = false;
+      setStatus('');
+    }
+  }
+
+  document.getElementById('btn-checkin').addEventListener('click', handleSubmit);
+  ['c-name', 'c-phone'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleSubmit();
+    });
+  });
+})();
+</script>
+</body>
+</html>
