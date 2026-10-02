@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <meta name="theme-color" content="#FFF6E0">
-<title>Confab 2026 · Check-In</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>Confab 2026 · Check-In ✦</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
@@ -12,7 +15,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   :root {
     --yellow: #FFD93D; --navy: #1B2A5E; --pink: #FF6B9D; --rose: #C74B7C;
-    --teal: #4ECDC4; --soft-navy: #4A5D8A; --green: #2FBF71;
+    --teal: #4ECDC4; --soft-navy: #4A5D8A; --green: #2FBF71; --lavender: #C9A7EB;
     --cream: #FFF6E0; --white: #FFFDF5;
   }
   html { -webkit-text-size-adjust: 100%; }
@@ -27,10 +30,59 @@
     line-height: 1.55;
     overscroll-behavior-y: none;
     min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    overflow-x: hidden;
+    -webkit-touch-callout: none;
   }
-  .wrap { max-width: 620px; margin: 0 auto; padding: 0 26px; }
 
-  .hero { text-align: center; margin-bottom: 40px; }
+  /* Floating disco stars */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    top: -40px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 18px;
+    opacity: 0.55;
+    animation: fall linear infinite;
+    will-change: transform;
+    text-shadow: 0 0 6px currentColor;
+  }
+  .star:nth-child(1) { left: 6%;  animation-duration: 16s; animation-delay: 0s;   color: var(--pink); }
+  .star:nth-child(2) { left: 20%; animation-duration: 20s; animation-delay: 3s;   color: var(--teal); }
+  .star:nth-child(3) { left: 34%; animation-duration: 14s; animation-delay: 1s;   color: var(--yellow); }
+  .star:nth-child(4) { left: 48%; animation-duration: 18s; animation-delay: 5s;   color: var(--lavender); }
+  .star:nth-child(5) { left: 62%; animation-duration: 22s; animation-delay: 2s;   color: var(--pink); }
+  .star:nth-child(6) { left: 76%; animation-duration: 17s; animation-delay: 6s;   color: var(--teal); }
+  .star:nth-child(7) { left: 88%; animation-duration: 24s; animation-delay: 4s;   color: var(--yellow); }
+  .star:nth-child(8) { left: 14%; animation-duration: 19s; animation-delay: 8s;   color: var(--lavender); }
+
+  @keyframes fall {
+    0%   { transform: translateY(-40px) rotate(0deg) scale(0.8); opacity: 0; }
+    10%  { opacity: 0.7; }
+    50%  { transform: translateY(50vh) rotate(180deg) scale(1.1); }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(105vh) rotate(360deg) scale(0.9); opacity: 0; }
+  }
+
+  .wrap {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 26px;
+    padding-left: max(26px, env(safe-area-inset-left));
+    padding-right: max(26px, env(safe-area-inset-right));
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero { text-align: center; margin-bottom: 40px; position: relative; }
   .yfmh {
     font-family: 'Press Start 2P', monospace;
     font-size: clamp(13px, 2.2vw, 19px);
@@ -54,12 +106,27 @@
     line-height: 1.2; letter-spacing: 1px; margin: 0 0 14px;
   }
   .subtitle {
-    font-family: 'VT323', monospace; font-size: 24px;
-    color: var(--rose); letter-spacing: 0.5px; margin: 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(13px, 2.2vw, 18px);
+    color: var(--pink);
+    letter-spacing: 3px;
+    margin: 6px 0 0;
+    line-height: 1.7;
+    text-shadow: 2px 2px 0 rgba(255, 107, 157, 0.25);
+  }
+  .subtitle .star-icon {
+    color: var(--pink);
+    font-size: 0.9em;
+    margin: 0 6px;
+    vertical-align: 1px;
   }
 
   .view { display: none; }
-  .view.active { display: block; }
+  .view.active { display: block; animation: popIn 0.35s ease-out; }
+  @keyframes popIn {
+    0%   { opacity: 0; transform: scale(0.96) translateY(6px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
 
   .box {
     background: var(--white);
@@ -67,6 +134,23 @@
     box-shadow: 7px 7px 0 var(--navy);
     padding: 26px 22px;
     margin-bottom: 24px;
+    position: relative;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  @media (hover: hover) {
+    .box:hover {
+      box-shadow: 7px 7px 0 var(--navy), 0 0 24px rgba(255, 107, 157, 0.35);
+      transform: translateY(-2px);
+    }
+  }
+  .box::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: 20px;
+    width: 60px; height: 8px;
+    background: var(--yellow);
+    border: 2px solid var(--navy);
+    transform: rotate(-3deg);
   }
   .box h2 {
     font-family: 'Press Start 2P', monospace;
@@ -74,59 +158,75 @@
     text-transform: uppercase; margin-bottom: 16px; padding-bottom: 14px;
     border-bottom: 4px solid var(--pink); line-height: 1.6;
   }
+  .box h2 .star-icon { color: var(--pink); }
   .box p {
     font-family: 'VT323', monospace; font-size: 22px;
     color: var(--navy); margin-bottom: 14px; line-height: 1.5; letter-spacing: 0.5px;
   }
+  .box p strong { color: var(--rose); }
 
-  .field { margin-bottom: 20px; }
+  .field { margin-bottom: 22px; }
   .label {
     display: block;
     font-family: 'Press Start 2P', monospace;
-    font-size: 9px; color: var(--navy); letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 8px;
+    font-size: 13px; color: var(--navy); letter-spacing: 1.2px;
+    text-transform: uppercase; margin-bottom: 10px; line-height: 1.6;
   }
+  .label .star-icon { color: var(--pink); margin-right: 6px; }
+
   .input {
     width: 100%;
-    padding: 14px 16px;
+    padding: 16px 18px;
     font-family: 'VT323', monospace;
-    font-size: 26px;
+    font-size: 32px;
     color: var(--navy);
     background: var(--cream);
     border: 3px solid var(--navy);
-    outline: none; -webkit-appearance: none; border-radius: 0;
-    letter-spacing: 0.5px; line-height: 1.4;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+    transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+    min-height: 64px;
   }
   .input:focus {
     border-color: var(--pink);
-    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.25);
+    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.25), 4px 4px 0 var(--pink), 0 0 20px rgba(255, 107, 157, 0.4);
+    transform: translate(-2px, -2px);
   }
-  .input::placeholder { color: var(--navy); opacity: 0.35; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
     font-family: 'Press Start 2P', monospace;
-    font-size: 11px; padding: 18px 22px;
+    font-size: 12px;
+    padding: 20px 24px;
     background: var(--pink); color: var(--white);
     border: 3px solid var(--navy);
     box-shadow: 6px 6px 0 var(--navy);
     cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
     text-decoration: none;
-    transition: transform 0.08s, box-shadow 0.08s, background 0.12s, color 0.12s;
-    touch-action: manipulation; min-height: 56px; user-select: none;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.12s, color 0.12s;
+    touch-action: manipulation;
+    min-height: 64px;
+    user-select: none;
+    -webkit-user-select: none;
     width: 100%; line-height: 1.3; text-align: center;
+    gap: 8px;
   }
+  .btn .star-icon { font-size: 16px; }
   .btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--navy); }
   @media (hover: hover) {
-    .btn:hover { background: var(--navy); color: var(--yellow); transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--navy); }
+    .btn:hover {
+      background: var(--navy); color: var(--yellow);
+      transform: translate(-2px, -2px) rotate(-1deg);
+      box-shadow: 8px 8px 0 var(--navy), 0 0 22px rgba(255, 217, 61, 0.6);
+    }
     .btn.secondary:hover { background: var(--yellow); color: var(--navy); }
-    .btn.teal:hover { background: var(--navy); color: var(--teal); }
   }
   .btn.secondary { background: var(--white); color: var(--navy); }
-  .btn.teal { background: var(--teal); color: var(--navy); }
   .btn[disabled] { opacity: 0.55; cursor: wait; }
-  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-  .btn-row .btn { flex: 1 1 200px; width: auto; }
 
   .result {
     display: none;
@@ -137,19 +237,61 @@
     text-align: center;
     line-height: 1.5;
     background: var(--white);
+    position: relative;
+    overflow: hidden;
   }
-  .result.show { display: block; }
-  .result .r-icon { font-family: 'Press Start 2P', monospace; font-size: 32px; line-height: 1; margin-bottom: 18px; }
-  .result .r-title { font-family: 'Press Start 2P', monospace; font-size: 14px; letter-spacing: 1px; line-height: 1.7; margin-bottom: 14px; }
-  .result .r-name { font-family: 'Pixelify Sans', sans-serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; letter-spacing: -0.2px; }
-  .result .r-phone { font-family: 'VT323', monospace; font-size: 22px; letter-spacing: 0.5px; opacity: 0.9; }
-  .result .r-note { font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 0.5px; opacity: 0.85; margin-top: 12px; }
-  .result.ok { border-color: var(--green); box-shadow: 7px 7px 0 var(--green); }
+  .result.show { display: block; animation: bouncyIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes bouncyIn {
+    0%   { opacity: 0; transform: scale(0.7) rotate(-6deg); }
+    60%  { transform: scale(1.05) rotate(2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  .result .r-icon {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 40px; line-height: 1; margin-bottom: 18px;
+    animation: pulseIcon 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseIcon {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.12); }
+  }
+  .result .r-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px; letter-spacing: 1px; line-height: 1.7; margin-bottom: 14px;
+  }
+  .result .r-name {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-weight: 700; font-size: 26px; margin-bottom: 6px; letter-spacing: -0.2px;
+  }
+  .result .r-phone {
+    font-family: 'VT323', monospace;
+    font-size: 22px; letter-spacing: 0.5px; opacity: 0.9;
+  }
+  .result .r-note {
+    font-family: 'VT323', monospace;
+    font-size: 20px; letter-spacing: 0.5px; opacity: 0.85; margin-top: 12px;
+  }
+  .result.ok  { border-color: var(--green); box-shadow: 7px 7px 0 var(--green), 0 0 32px rgba(47, 191, 113, 0.45); }
   .result.ok .r-title, .result.ok .r-icon { color: var(--green); }
-  .result.err { border-color: var(--rose); box-shadow: 7px 7px 0 var(--rose); }
+  .result.err { border-color: var(--rose); box-shadow: 7px 7px 0 var(--rose), 0 0 32px rgba(199, 75, 124, 0.45); }
   .result.err .r-title, .result.err .r-icon { color: var(--rose); }
-  .result.warn { border-color: var(--yellow); box-shadow: 7px 7px 0 var(--yellow); }
-  .result.warn .r-title, .result.warn .r-icon { color: var(--yellow); }
+  .result.warn { border-color: var(--yellow); box-shadow: 7px 7px 0 var(--yellow), 0 0 32px rgba(255, 217, 61, 0.55); }
+  .result.warn .r-title, .result.warn .r-icon { color: var(--navy); }
+
+  .result.ok::before,
+  .result.ok::after {
+    content: '✦';
+    position: absolute;
+    color: var(--yellow);
+    font-size: 22px;
+    animation: twinkle 1.8s ease-in-out infinite;
+  }
+  .result.ok::before { top: 14px; left: 18px; }
+  .result.ok::after  { bottom: 14px; right: 18px; animation-delay: 0.9s; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
+    50%      { opacity: 1;   transform: scale(1.4) rotate(20deg); }
+  }
 
   .status-line {
     font-family: 'VT323', monospace; font-size: 20px;
@@ -161,28 +303,132 @@
     text-align: center;
     font-family: 'VT323', monospace; font-size: 20px;
     color: var(--soft-navy); margin-top: 48px;
-    opacity: 0.7; letter-spacing: 0.5px;
+    opacity: 0.75; letter-spacing: 0.5px;
+    padding-bottom: env(safe-area-inset-bottom);
   }
+  .footer .heart { color: var(--rose); }
 
+  /* ============ MOBILE / TOUCH OPTIMISATIONS ============ */
   @media (max-width: 640px) {
-    body { padding: 24px 0 60px; font-size: 20px; }
-    .wrap { padding: 0 16px; }
-    .hero { margin-bottom: 32px; }
-    h1 { text-shadow: 4px 4px 0 var(--pink); }
-    .subtitle { font-size: 22px; }
+    body {
+      padding: 28px 0 60px;
+      padding-top: max(28px, env(safe-area-inset-top));
+      padding-bottom: max(60px, env(safe-area-inset-bottom));
+      font-size: 20px;
+    }
+    .wrap { padding: 0 18px; padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+    .hero { margin-bottom: 30px; }
+    h1 { text-shadow: 4px 4px 0 var(--pink); margin-bottom: 12px; }
+    .yfmh { letter-spacing: 2px; }
+    .sangath, .presents { letter-spacing: 2.5px; }
+    .subtitle { letter-spacing: 2px; font-size: 12px; text-shadow: 1.5px 1.5px 0 rgba(255, 107, 157, 0.25); }
+    .subtitle .star-icon { margin: 0 4px; }
+
     .box { padding: 22px 18px; }
-    .box h2 { font-size: 10px; }
-    .btn { font-size: 10px; padding: 16px 18px; min-height: 52px; }
-    .btn-row .btn { flex: 1 1 100%; }
-    .result .r-title { font-size: 12px; }
-    .result .r-icon { font-size: 26px; }
+    .box h2 { font-size: 10px; padding-bottom: 12px; margin-bottom: 14px; }
+    .box p { font-size: 22px; }
+    .box::before { width: 48px; height: 7px; left: 16px; }
+
+    .field { margin-bottom: 20px; }
+    .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+    .input {
+      padding: 16px 16px;
+      font-size: 30px;
+      min-height: 62px;
+    }
+
+    .btn {
+      font-size: 11px;
+      padding: 22px 18px;
+      min-height: 66px;
+      letter-spacing: 0.8px;
+      transform: none;
+    }
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0 var(--navy);
+    }
+
+    .result {
+      padding: 26px 18px;
+      margin-bottom: 20px;
+    }
+    .result .r-icon { font-size: 34px; margin-bottom: 14px; }
+    .result .r-title { font-size: 12px; margin-bottom: 12px; }
     .result .r-name { font-size: 22px; }
     .result .r-phone { font-size: 20px; }
+    .result .r-note { font-size: 19px; margin-top: 10px; }
+
+    .status-line { font-size: 19px; }
+    .footer { font-size: 19px; margin-top: 36px; }
+    .star { font-size: 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media (max-width: 380px) {
+    body { padding: 22px 0 50px; padding-top: max(22px, env(safe-area-inset-top)); }
+    .wrap { padding: 0 14px; }
+    .hero { margin-bottom: 24px; }
+    h1 { font-size: 22px; text-shadow: 3px 3px 0 var(--pink); margin-bottom: 10px; }
+    .yfmh { font-size: 12px; letter-spacing: 1.5px; }
+    .sangath, .presents { font-size: 9px; letter-spacing: 2px; }
+    .subtitle { font-size: 10px; letter-spacing: 1.5px; }
+    .subtitle .star-icon { margin: 0 3px; }
+
+    .box { padding: 20px 16px; }
+    .box h2 { font-size: 9px; }
+    .box p { font-size: 21px; }
+
+    .label { font-size: 10px; letter-spacing: 0.8px; }
+    .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
+    .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
+
+    .result { padding: 22px 16px; }
+    .result .r-title { font-size: 11px; }
+    .result .r-icon { font-size: 30px; }
+    .result .r-name { font-size: 20px; }
+    .result .r-phone { font-size: 19px; }
+    .result .r-note { font-size: 18px; }
+
+    .status-line, .footer { font-size: 18px; }
+  }
+
+  @media (max-height: 520px) and (orientation: landscape) {
+    body { padding: 16px 0 24px; padding-top: max(16px, env(safe-area-inset-top)); }
+    .hero { margin-bottom: 18px; }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    .yfmh { font-size: 12px; }
+    .sangath, .presents { margin: 8px 0 6px; }
+    .subtitle { font-size: 11px; }
+    .box { padding: 18px 16px; margin-bottom: 16px; }
+    .field { margin-bottom: 14px; }
+    .label { font-size: 11px; }
+    .input { min-height: 52px; font-size: 26px; }
+    .btn { min-height: 56px; padding: 16px; }
+  }
+
+  @media (hover: none) {
+    .box:hover { box-shadow: 7px 7px 0 var(--navy); transform: none; }
+    .box::before { transform: rotate(-3deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .star { display: none; }
+  }
 </style>
 </head>
 <body>
+
+<div class="stars" aria-hidden="true">
+  <span class="star">✦</span>
+  <span class="star">★</span>
+  <span class="star">✧</span>
+  <span class="star">✦</span>
+  <span class="star">✩</span>
+  <span class="star">★</span>
+  <span class="star">✦</span>
+  <span class="star">✧</span>
+</div>
 
 <div class="wrap">
 
@@ -191,7 +437,7 @@
     <p class="sangath">IN ASSOCIATION WITH SANGATH</p>
     <p class="presents">★ PRESENTS ★</p>
     <h1>CONFAB 2026</h1>
-    <p class="subtitle">Attendee Check-In</p>
+    <p class="subtitle"><span class="star-icon">★</span>ATTENDEE CHECK-IN<span class="star-icon">★</span></p>
   </header>
 
   <div class="view active" id="view-attendee">
@@ -205,25 +451,25 @@
     </div>
 
     <div class="box" id="checkin-form-box">
-      <h2>Check Yourself In</h2>
-      <p>Enter your full name and phone number exactly as registered.</p>
+      <h2><span class="star-icon">✦</span> Ready to Roll <span class="star-icon">✦</span></h2>
+      <p>Write your name and phone number, the same as you registered, then you will be checked in and all geared up for confab!</p>
 
       <div class="field">
-        <label class="label" for="c-name">Full Name</label>
-        <input class="input" type="text" id="c-name" placeholder="e.g. Priya Sharma" autocomplete="name">
+        <label class="label" for="c-name"><span class="star-icon">★</span> Full Name</label>
+        <input class="input" type="text" id="c-name" autocomplete="name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next">
       </div>
       <div class="field">
-        <label class="label" for="c-phone">Phone Number</label>
-        <input class="input" type="tel" inputmode="numeric" id="c-phone" placeholder="e.g. 9876543210" autocomplete="tel">
+        <label class="label" for="c-phone"><span class="star-icon">★</span> Phone Number</label>
+        <input class="input" type="tel" inputmode="numeric" id="c-phone" autocomplete="tel" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" pattern="[0-9+\s\-()]*">
       </div>
 
-      <button class="btn" id="btn-checkin">Check Me In</button>
+      <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
       <div class="status-line" id="attendee-status"></div>
     </div>
 
   </div>
 
-  <div class="footer">Confab 2026 · Check-In System</div>
+  <div class="footer">Confab 2026 · made with <span class="heart">♥</span> by YMH</div>
 </div>
 
 <script>
@@ -252,6 +498,7 @@
     box.classList.remove('ok', 'err', 'warn');
     box.classList.add(kind, 'show');
     document.getElementById('checkin-form-box').style.display = 'none';
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -262,15 +509,15 @@
   }
 
   async function handleSubmit() {
-    const nameEl = document.getElementById('c-name');
+    const nameEl  = document.getElementById('c-name');
     const phoneEl = document.getElementById('c-phone');
-    const btn = document.getElementById('btn-checkin');
-    const name = nameEl.value.trim();
+    const btn     = document.getElementById('btn-checkin');
+    const name  = nameEl.value.trim();
     const phone = phoneEl.value.trim();
 
     if (!name || !phone) {
-      showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-        'Please enter both your name and phone number.');
+      showCheckInResult('err', '✗ OOPS!', '✗', '', '',
+        'Need both your name and phone number. Fill both in and try again. ★');
       return;
     }
 
@@ -280,22 +527,23 @@
     try {
       const out = await submitCheckIn(name, phone);
       if (out.ok) {
-        showCheckInResult('ok', '✓ CHECKED IN', '✓', out.name, 'Phone: ' + out.phone,
-          'You are checked in. See you at Confab 2026!');
+        showCheckInResult('ok', '✓ YOU\'RE IN!', '✓',
+          out.name, 'Phone: ' + out.phone,
+          'Boom. You\'re checked in and all geared up for confab! ★✦');
       } else if (out.reason === 'already') {
         showCheckInResult('warn', '⚠ ALREADY CHECKED IN', '⚠',
           out.name || name, out.phone ? 'Phone: ' + out.phone : '',
-          'You have already been checked in.');
+          'You\'re already on the list and ready to go. ✦');
       } else if (out.reason === 'not_found') {
         showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-          "We couldn't find this name and phone in the attendee list. Please check your details or speak to the registration desk.");
+          'Couldn\'t find that name and phone combo. Double check your details, or pop by the registration desk. ★');
       } else {
         showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-          'Something went wrong. Please speak to the registration desk.');
+          'Something glitched on our end. Try again, or ask at the registration desk. ★');
       }
     } catch (err) {
       showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-        'Could not reach the check-in server. Please speak to the registration desk.');
+        'Couldn\'t reach the check-in server. Please show this at the registration desk. ★');
     } finally {
       btn.disabled = false;
       setStatus('');
@@ -303,9 +551,13 @@
   }
 
   document.getElementById('btn-checkin').addEventListener('click', handleSubmit);
-  ['c-name', 'c-phone'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleSubmit();
+  ['c-name', 'c-phone'].forEach(function (id) {
+    document.getElementById(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (id === 'c-name') document.getElementById('c-phone').focus();
+        else handleSubmit();
+      }
     });
   });
 })();
