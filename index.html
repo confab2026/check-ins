@@ -299,6 +299,25 @@
     margin-top: 16px; letter-spacing: 0.5px; min-height: 26px;
   }
 
+  /* DEBUG PANEL */
+  #debug-panel {
+    display: none; /* Hidden by default, shown via JS */
+    background: #1B2A5E;
+    color: #FFF6E0;
+    padding: 16px;
+    border: 3px solid var(--yellow);
+    margin-top: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    line-height: 1.4;
+    word-break: break-all;
+  }
+  #debug-panel pre {
+    white-space: pre-wrap;
+    margin-top: 10px;
+    color: #FFD93D;
+  }
+
   .footer {
     text-align: center;
     font-family: 'VT323', monospace; font-size: 20px;
@@ -308,14 +327,8 @@
   }
   .footer .heart { color: var(--rose); }
 
-  /* ============ MOBILE / TOUCH OPTIMISATIONS ============ */
   @media (max-width: 640px) {
-    body {
-      padding: 28px 0 60px;
-      padding-top: max(28px, env(safe-area-inset-top));
-      padding-bottom: max(60px, env(safe-area-inset-bottom));
-      font-size: 20px;
-    }
+    body { padding: 28px 0 60px; padding-top: max(28px, env(safe-area-inset-top)); padding-bottom: max(60px, env(safe-area-inset-bottom)); font-size: 20px; }
     .wrap { padding: 0 18px; padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
     .hero { margin-bottom: 30px; }
     h1 { text-shadow: 4px 4px 0 var(--pink); margin-bottom: 12px; }
@@ -323,42 +336,21 @@
     .sangath, .presents { letter-spacing: 2.5px; }
     .subtitle { letter-spacing: 2px; font-size: 12px; text-shadow: 1.5px 1.5px 0 rgba(255, 107, 157, 0.25); }
     .subtitle .star-icon { margin: 0 4px; }
-
     .box { padding: 22px 18px; }
     .box h2 { font-size: 10px; padding-bottom: 12px; margin-bottom: 14px; }
     .box p { font-size: 22px; }
     .box::before { width: 48px; height: 7px; left: 16px; }
-
     .field { margin-bottom: 20px; }
     .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
-    .input {
-      padding: 16px 16px;
-      font-size: 30px;
-      min-height: 62px;
-    }
-
-    .btn {
-      font-size: 11px;
-      padding: 22px 18px;
-      min-height: 66px;
-      letter-spacing: 0.8px;
-      transform: none;
-    }
-    .btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 3px 3px 0 var(--navy);
-    }
-
-    .result {
-      padding: 26px 18px;
-      margin-bottom: 20px;
-    }
+    .input { padding: 16px 16px; font-size: 30px; min-height: 62px; }
+    .btn { font-size: 11px; padding: 22px 18px; min-height: 66px; letter-spacing: 0.8px; transform: none; }
+    .btn:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--navy); }
+    .result { padding: 26px 18px; margin-bottom: 20px; }
     .result .r-icon { font-size: 34px; margin-bottom: 14px; }
     .result .r-title { font-size: 12px; margin-bottom: 12px; }
     .result .r-name { font-size: 22px; }
     .result .r-phone { font-size: 20px; }
     .result .r-note { font-size: 19px; margin-top: 10px; }
-
     .status-line { font-size: 19px; }
     .footer { font-size: 19px; margin-top: 36px; }
     .star { font-size: 14px; }
@@ -373,22 +365,18 @@
     .sangath, .presents { font-size: 9px; letter-spacing: 2px; }
     .subtitle { font-size: 10px; letter-spacing: 1.5px; }
     .subtitle .star-icon { margin: 0 3px; }
-
     .box { padding: 20px 16px; }
     .box h2 { font-size: 9px; }
     .box p { font-size: 21px; }
-
     .label { font-size: 10px; letter-spacing: 0.8px; }
     .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
     .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
-
     .result { padding: 22px 16px; }
     .result .r-title { font-size: 11px; }
     .result .r-icon { font-size: 30px; }
     .result .r-name { font-size: 20px; }
     .result .r-phone { font-size: 19px; }
     .result .r-note { font-size: 18px; }
-
     .status-line, .footer { font-size: 18px; }
   }
 
@@ -465,6 +453,12 @@
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
       <div class="status-line" id="attendee-status"></div>
+      
+      <!-- DEBUG PANEL TO SEE EXACTLY WHAT BACKEND SENDS BACK -->
+      <div id="debug-panel">
+        <strong>DEBUG INFO:</strong>
+        <pre id="debug-content">Waiting for response...</pre>
+      </div>
     </div>
 
   </div>
@@ -514,10 +508,17 @@
     const btn     = document.getElementById('btn-checkin');
     const name  = nameEl.value.trim();
     const phone = phoneEl.value.trim();
+    const debugPanel = document.getElementById('debug-panel');
+    const debugContent = document.getElementById('debug-content');
+
+    // Show debug panel
+    debugPanel.style.display = 'block';
+    debugContent.textContent = 'Sending to server...\nName: ' + name + '\nPhone: ' + phone;
 
     if (!name || !phone) {
       showCheckInResult('err', '✗ OOPS!', '✗', '', '',
         'Need both your name and phone number. Fill both in and try again. ★');
+      debugContent.textContent = 'ERROR: Missing name or phone field.';
       return;
     }
 
@@ -526,6 +527,13 @@
 
     try {
       const out = await submitCheckIn(name, phone);
+      
+      // Log to console for full detail
+      console.log("BACKEND RESPONSE:", out);
+      
+      // Update debug panel with raw response
+      debugContent.textContent = 'SUCCESS RESPONSE:\n' + JSON.stringify(out, null, 2);
+
       if (out.ok) {
         showCheckInResult('ok', '✓ YOU\'RE IN!', '✓',
           out.name, 'Phone: ' + out.phone,
@@ -542,7 +550,11 @@
           'Something glitched on our end. Try again, or ask at the registration desk. ★');
       }
     } catch (err) {
-      showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
+      console.error("FETCH ERROR:", err);
+      
+      debugContent.textContent = 'NETWORK / SERVER ERROR:\n' + err.message + '\n\nPossible causes:\n1. Apps Script not deployed as "New Version"\n2. "Who has access" not set to "Anyone"\n3. Sheet name mismatch in Apps Script';
+      
+      showCheckInResult('err', '✗ CONNECTION ERROR', '✗', '', '',
         'Couldn\'t reach the check-in server. Please show this at the registration desk. ★');
     } finally {
       btn.disabled = false;
