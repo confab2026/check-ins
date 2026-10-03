@@ -132,6 +132,15 @@
     text-transform: uppercase; margin-bottom: 10px; line-height: 1.6;
   }
   .label .star-icon { color: var(--pink); margin-right: 6px; }
+  .label .optional {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    color: var(--soft-navy);
+    margin-left: 6px;
+    font-weight: normal;
+  }
 
   .input {
     width: 100%;
@@ -154,6 +163,15 @@
     border-color: var(--pink);
     box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.25), 4px 4px 0 var(--pink), 0 0 20px rgba(255, 107, 157, 0.4);
     transform: translate(-2px, -2px);
+  }
+
+  .hint {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--soft-navy);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
   }
 
   .btn {
@@ -265,7 +283,9 @@
     .box::before { width: 48px; height: 7px; left: 16px; }
     .field { margin-bottom: 20px; }
     .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+    .label .optional { font-size: 15px; }
     .input { padding: 16px 16px; font-size: 30px; min-height: 62px; }
+    .hint { font-size: 17px; }
     .btn { font-size: 11px; padding: 22px 18px; min-height: 66px; letter-spacing: 0.8px; transform: none; }
     .btn:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--navy); }
     .result { padding: 26px 18px; margin-bottom: 20px; }
@@ -289,7 +309,9 @@
     .subtitle { font-size: 10px; letter-spacing: 1.5px; }
     .box { padding: 20px 16px; }
     .label { font-size: 10px; letter-spacing: 0.8px; }
+    .label .optional { font-size: 14px; }
     .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
+    .hint { font-size: 16px; }
     .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
     .result { padding: 22px 16px; }
     .result .r-title { font-size: 11px; }
@@ -341,15 +363,20 @@
 
     <div class="box" id="checkin-form-box">
       <h2><span class="star-icon">✦</span> You Made It! <span class="star-icon">✦</span></h2>
-      <p>Write your name and phone number, the same as you registered, then you will be checked in and all geared up for confab!</p>
+      <p>Enter your name and <strong>either</strong> your phone number <strong>or</strong> your email — whichever you registered with.</p>
 
       <div class="field">
         <label class="label" for="c-name"><span class="star-icon">★</span> Name</label>
         <input class="input" type="text" id="c-name" autocomplete="name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next">
       </div>
       <div class="field">
-        <label class="label" for="c-phone"><span class="star-icon">★</span> Phone Number</label>
-        <input class="input" type="tel" inputmode="numeric" id="c-phone" autocomplete="tel" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+        <label class="label" for="c-phone"><span class="star-icon">★</span> Phone Number <span class="optional">(or use email below)</span></label>
+        <input class="input" type="tel" inputmode="numeric" id="c-phone" autocomplete="tel" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next">
+      </div>
+      <div class="field">
+        <label class="label" for="c-email"><span class="star-icon">★</span> Email <span class="optional">(or use phone above)</span></label>
+        <input class="input" type="email" inputmode="email" id="c-email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+        <p class="hint">Fill in <strong>at least one</strong> of phone or email.</p>
       </div>
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
@@ -365,26 +392,31 @@
 (function () {
   'use strict';
 
-  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwEhyL27sKXKR1xo13jdInh6he3AmD15gOaGA3XyDubLMXIg0kyF5jSKD_xIN5sbL9bpA/exec';
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwB-h_ilkdVH234k-tVLYEWEu6asXao4c1FwbNf_zi9Y7Sn0KACJWG4XLNwP2V4Ybp9ng/exec';
 
-  async function submitCheckIn(name, phone) {
+  async function submitCheckIn(name, phone, email) {
     const res = await fetch(BACKEND_URL, {
       method: 'POST',
       mode: 'cors',
       redirect: 'follow',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'checkin', name: name, phone: phone })
+      body: JSON.stringify({
+        action: 'checkin',
+        name: name,
+        phone: phone,
+        email: email
+      })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
   }
 
-  function showCheckInResult(kind, title, icon, name, phone, note) {
+  function showCheckInResult(kind, title, icon, name, contact, note) {
     const box = document.getElementById('checkin-result');
     document.getElementById('checkin-title').textContent = title;
     document.getElementById('checkin-icon').textContent = icon || '';
     document.getElementById('checkin-name').textContent = name || '';
-    document.getElementById('checkin-phone').textContent = phone || '';
+    document.getElementById('checkin-phone').textContent = contact || '';
     document.getElementById('checkin-note').textContent = note || '';
     box.classList.remove('ok', 'err', 'warn');
     box.classList.add(kind, 'show');
@@ -402,13 +434,22 @@
   async function handleSubmit() {
     const nameEl  = document.getElementById('c-name');
     const phoneEl = document.getElementById('c-phone');
+    const emailEl = document.getElementById('c-email');
     const btn     = document.getElementById('btn-checkin');
+
     const name  = nameEl.value.trim();
     const phone = phoneEl.value.trim();
+    const email = emailEl.value.trim();
 
-    if (!name || !phone) {
+    if (!name) {
       showCheckInResult('err', '✗ OOPS!', '✗', '', '',
-        'Need both your name and phone number. Fill both in and try again. ★');
+        'Please enter your name. ★');
+      return;
+    }
+
+    if (!phone && !email) {
+      showCheckInResult('err', '✗ MISSING CONTACT', '✗', '', '',
+        'Please enter either your phone number OR your email. ★');
       return;
     }
 
@@ -416,20 +457,26 @@
     setStatus('Checking…');
 
     try {
-      const out = await submitCheckIn(name, phone);
+      const out = await submitCheckIn(name, phone, email);
       console.log("Backend response:", out);
 
       if (out.ok) {
+        const contact = out.phone
+          ? 'Phone: ' + out.phone
+          : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('ok', '✓ YOU\'RE IN!', '✓',
-          out.name, 'Phone: ' + out.phone,
+          out.name, contact,
           'Boom. You\'re checked in and all geared up for confab! ★✦');
       } else if (out.reason === 'already') {
+        const contact = out.phone
+          ? 'Phone: ' + out.phone
+          : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('warn', '⚠ ALREADY CHECKED IN', '⚠',
-          out.name || name, out.phone ? 'Phone: ' + out.phone : '',
+          out.name || name, contact,
           'You\'re already on the list and ready to go. ✦');
       } else if (out.reason === 'not_found') {
         showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-          'Couldn\'t find that name and phone combo. Double check your details, or pop by the registration desk. ★');
+          'Couldn\'t find that name and contact combo. Double check your details, or pop by the registration desk. ★');
       } else {
         showCheckInResult('err', '✗ SOMETHING WENT WRONG', '✗', '', '',
           (out.message || 'Something glitched on our end. Try again, or ask at the registration desk. ★'));
@@ -445,14 +492,15 @@
   }
 
   document.getElementById('btn-checkin').addEventListener('click', handleSubmit);
-  ['c-name', 'c-phone'].forEach(function (id) {
-    document.getElementById(id).addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (id === 'c-name') document.getElementById('c-phone').focus();
-        else handleSubmit();
-      }
-    });
+
+  document.getElementById('c-name').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('c-phone').focus(); }
+  });
+  document.getElementById('c-phone').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('c-email').focus(); }
+  });
+  document.getElementById('c-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); handleSubmit(); }
   });
 })();
 </script>
