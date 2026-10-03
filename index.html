@@ -132,7 +132,7 @@
     border: 3px solid var(--navy);
     box-shadow: 7px 7px 0 var(--navy);
     padding: 22px 22px 24px;
-    margin-bottom: 26px;
+    margin-bottom: 4px;
     position: relative;
     text-align: center;
   }
@@ -358,8 +358,6 @@
   .result-cta {
     display: none;
     margin-top: 22px;
-    padding-top: 22px;
-    border-top: 2px dashed var(--navy);
   }
   .result-cta.show { display: block; }
   .result-cta p {
@@ -401,7 +399,7 @@
     .box h2 { font-size: 10px; padding-bottom: 12px; margin-bottom: 14px; }
     .box p { font-size: 22px; }
     .box::before { width: 48px; height: 7px; left: 16px; }
-    .newbie-box { padding: 20px 18px 22px; margin-bottom: 22px; }
+    .newbie-box { padding: 20px 18px 22px; margin-bottom: 4px; }
     .newbie-box::before { width: 48px; height: 7px; left: 16px; }
     .newbie-headline { font-size: 10px; letter-spacing: 1.2px; }
     .newbie-copy { font-size: 20px; }
@@ -496,16 +494,19 @@
       <div class="r-phone" id="checkin-phone"></div>
       <div class="r-note" id="checkin-note"></div>
 
-      <!-- Tally fallback shown when user isn't found or on connection error -->
+      <!-- Tally fallback shown only when user isn't found or on connection error -->
       <div class="result-cta" id="checkin-result-cta">
-        <p>Not on our list yet? Sign up on the spot and check in right here.</p>
-        <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
-          <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
-        </a>
+        <div class="newbie-box">
+          <p class="newbie-headline"><span class="star-icon" style="color: var(--pink);">★</span> Not registered yet? <span class="star-icon" style="color: var(--pink);">★</span></p>
+          <p class="newbie-copy">No worries! You can still sign up on the spot and check in right here.</p>
+          <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
+            <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
+          </a>
 
-        <div class="crew-note compact">
-          <span class="crew-headline">Important Step</span>
-          <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong> to show you've registered on the spot. They'll guide you to the registration desk and hand you your attendee kit!</span>
+          <div class="crew-note compact">
+            <span class="crew-headline">Important Step</span>
+            <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong>. They'll guide you to the registration desk and hand you your attendee kit!</span>
+          </div>
         </div>
       </div>
     </div>
@@ -525,20 +526,6 @@
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
       <div class="status-line" id="attendee-status"></div>
-    </div>
-
-    <!-- Newbie callout visible on the main page -->
-    <div class="newbie-box" id="newbie-box">
-      <p class="newbie-headline"><span class="star-icon" style="color: var(--pink);">★</span> Not registered yet? <span class="star-icon" style="color: var(--pink);">★</span></p>
-      <p class="newbie-copy">No worries! You can still sign up on the spot and check in right here.</p>
-      <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
-        <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
-      </a>
-
-      <div class="crew-note">
-        <span class="crew-headline">Important Step</span>
-        <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong> to show you've registered on the spot. They will walk you to the registration desk to receive your attendee kit!</span>
-      </div>
     </div>
 
   </div>
