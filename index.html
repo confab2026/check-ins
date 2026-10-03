@@ -132,7 +132,7 @@
     border: 3px solid var(--navy);
     box-shadow: 7px 7px 0 var(--navy);
     padding: 22px 22px 24px;
-    margin-bottom: 4px;
+    margin-bottom: 26px;
     position: relative;
     text-align: center;
   }
@@ -233,15 +233,6 @@
     color: var(--yellow);
     font-weight: 700;
   }
-
-  /* Small version used inside the result CTA */
-  .crew-note.compact {
-    margin-top: 16px;
-    padding: 14px 16px;
-    box-shadow: 4px 4px 0 var(--pink);
-  }
-  .crew-note.compact .crew-headline { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 6px; }
-  .crew-note.compact .crew-copy { font-size: 18px; }
 
   .field { margin-bottom: 22px; }
   .label {
@@ -358,6 +349,8 @@
   .result-cta {
     display: none;
     margin-top: 22px;
+    padding-top: 22px;
+    border-top: 2px dashed var(--navy);
   }
   .result-cta.show { display: block; }
   .result-cta p {
@@ -370,6 +363,9 @@
     opacity: 0.9;
   }
   .result-cta .newbie-btn { font-size: 10px; min-height: 58px; padding: 16px 18px; }
+  .result-cta .crew-note { margin-top: 16px; padding: 14px 16px; box-shadow: 4px 4px 0 var(--pink); }
+  .result-cta .crew-note .crew-headline { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 6px; }
+  .result-cta .crew-note .crew-copy { font-size: 18px; }
 
   .status-line {
     font-family: 'VT323', monospace; font-size: 20px;
@@ -399,7 +395,7 @@
     .box h2 { font-size: 10px; padding-bottom: 12px; margin-bottom: 14px; }
     .box p { font-size: 22px; }
     .box::before { width: 48px; height: 7px; left: 16px; }
-    .newbie-box { padding: 20px 18px 22px; margin-bottom: 4px; }
+    .newbie-box { padding: 20px 18px 22px; margin-bottom: 22px; }
     .newbie-box::before { width: 48px; height: 7px; left: 16px; }
     .newbie-headline { font-size: 10px; letter-spacing: 1.2px; }
     .newbie-copy { font-size: 20px; }
@@ -407,9 +403,9 @@
     .crew-note { padding: 14px 16px; margin-top: 16px; }
     .crew-note .crew-headline { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 6px; }
     .crew-note .crew-copy { font-size: 18px; }
-    .crew-note.compact { padding: 12px 14px; }
-    .crew-note.compact .crew-headline { font-size: 9px; }
-    .crew-note.compact .crew-copy { font-size: 17px; }
+    .result-cta .crew-note { padding: 12px 14px; }
+    .result-cta .crew-note .crew-headline { font-size: 9px; }
+    .result-cta .crew-note .crew-copy { font-size: 17px; }
     .field { margin-bottom: 20px; }
     .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
     .input { padding: 16px 16px; font-size: 30px; min-height: 62px; }
@@ -496,17 +492,14 @@
 
       <!-- Tally fallback shown only when user isn't found or on connection error -->
       <div class="result-cta" id="checkin-result-cta">
-        <div class="newbie-box">
-          <p class="newbie-headline"><span class="star-icon" style="color: var(--pink);">★</span> Not registered yet? <span class="star-icon" style="color: var(--pink);">★</span></p>
-          <p class="newbie-copy">No worries! You can still sign up on the spot and check in right here.</p>
-          <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
-            <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
-          </a>
+        <p>Not on our list yet? Sign up on the spot and check in right here.</p>
+        <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
+          <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
+        </a>
 
-          <div class="crew-note compact">
-            <span class="crew-headline">Important Step</span>
-            <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong>. They'll guide you to the registration desk and hand you your attendee kit!</span>
-          </div>
+        <div class="crew-note">
+          <span class="crew-headline">Important Step</span>
+          <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong>. They'll guide you to the registration desk and hand you your attendee kit!</span>
         </div>
       </div>
     </div>
@@ -526,6 +519,20 @@
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
       <div class="status-line" id="attendee-status"></div>
+    </div>
+
+    <!-- Newbie callout visible on the main page -->
+    <div class="newbie-box" id="newbie-box">
+      <p class="newbie-headline"><span class="star-icon" style="color: var(--pink);">★</span> Not registered yet? <span class="star-icon" style="color: var(--pink);">★</span></p>
+      <p class="newbie-copy">No worries! You can still sign up on the spot and check in right here.</p>
+      <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
+        <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
+      </a>
+
+      <div class="crew-note">
+        <span class="crew-headline">Important Step</span>
+        <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong>. They'll guide you to the registration desk and hand you your attendee kit!</span>
+      </div>
     </div>
 
   </div>
