@@ -132,15 +132,6 @@
     text-transform: uppercase; margin-bottom: 10px; line-height: 1.6;
   }
   .label .star-icon { color: var(--pink); margin-right: 6px; }
-  .label .optional {
-    font-family: 'VT323', monospace;
-    font-size: 16px;
-    text-transform: none;
-    letter-spacing: 0.5px;
-    color: var(--soft-navy);
-    margin-left: 6px;
-    font-weight: normal;
-  }
 
   .input {
     width: 100%;
@@ -163,15 +154,6 @@
     border-color: var(--pink);
     box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.25), 4px 4px 0 var(--pink), 0 0 20px rgba(255, 107, 157, 0.4);
     transform: translate(-2px, -2px);
-  }
-
-  .hint {
-    font-family: 'VT323', monospace;
-    font-size: 18px;
-    color: var(--soft-navy);
-    margin-top: 8px;
-    letter-spacing: 0.5px;
-    line-height: 1.4;
   }
 
   .btn {
@@ -283,9 +265,7 @@
     .box::before { width: 48px; height: 7px; left: 16px; }
     .field { margin-bottom: 20px; }
     .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
-    .label .optional { font-size: 15px; }
     .input { padding: 16px 16px; font-size: 30px; min-height: 62px; }
-    .hint { font-size: 17px; }
     .btn { font-size: 11px; padding: 22px 18px; min-height: 66px; letter-spacing: 0.8px; transform: none; }
     .btn:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--navy); }
     .result { padding: 26px 18px; margin-bottom: 20px; }
@@ -309,9 +289,7 @@
     .subtitle { font-size: 10px; letter-spacing: 1.5px; }
     .box { padding: 20px 16px; }
     .label { font-size: 10px; letter-spacing: 0.8px; }
-    .label .optional { font-size: 14px; }
     .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
-    .hint { font-size: 16px; }
     .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
     .result { padding: 22px 16px; }
     .result .r-title { font-size: 11px; }
@@ -370,13 +348,8 @@
         <input class="input" type="text" id="c-name" autocomplete="name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next">
       </div>
       <div class="field">
-        <label class="label" for="c-phone"><span class="star-icon">★</span> Phone Number <span class="optional">(or use email below)</span></label>
-        <input class="input" type="tel" inputmode="numeric" id="c-phone" autocomplete="tel" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next">
-      </div>
-      <div class="field">
-        <label class="label" for="c-email"><span class="star-icon">★</span> Email <span class="optional">(or use phone above)</span></label>
-        <input class="input" type="email" inputmode="email" id="c-email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
-        <p class="hint">Fill in <strong>at least one</strong> of phone or email.</p>
+        <label class="label" for="c-contact"><span class="star-icon">★</span> Phone Number OR Email</label>
+        <input class="input" type="text" id="c-contact" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
       </div>
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
@@ -393,6 +366,13 @@
   'use strict';
 
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwB-h_ilkdVH234k-tVLYEWEu6asXao4c1FwbNf_zi9Y7Sn0KACJWG4XLNwP2V4Ybp9ng/exec';
+
+  // Detect if input looks like an email or a phone number
+  function detectContactType(value) {
+    if (!value) return 'unknown';
+    if (value.indexOf('@') !== -1) return 'email';
+    return 'phone';
+  }
 
   async function submitCheckIn(name, phone, email) {
     const res = await fetch(BACKEND_URL, {
@@ -432,14 +412,12 @@
   }
 
   async function handleSubmit() {
-    const nameEl  = document.getElementById('c-name');
-    const phoneEl = document.getElementById('c-phone');
-    const emailEl = document.getElementById('c-email');
-    const btn     = document.getElementById('btn-checkin');
+    const nameEl    = document.getElementById('c-name');
+    const contactEl = document.getElementById('c-contact');
+    const btn       = document.getElementById('btn-checkin');
 
-    const name  = nameEl.value.trim();
-    const phone = phoneEl.value.trim();
-    const email = emailEl.value.trim();
+    const name    = nameEl.value.trim();
+    const contact = contactEl.value.trim();
 
     if (!name) {
       showCheckInResult('err', '✗ OOPS!', '✗', '', '',
@@ -447,11 +425,16 @@
       return;
     }
 
-    if (!phone && !email) {
+    if (!contact) {
       showCheckInResult('err', '✗ MISSING CONTACT', '✗', '', '',
         'Please enter either your phone number OR your email. ★');
       return;
     }
+
+    // Detect what type of contact this is
+    const contactType = detectContactType(contact);
+    const phone = contactType === 'phone' ? contact : '';
+    const email = contactType === 'email' ? contact : '';
 
     btn.disabled = true;
     setStatus('Checking…');
@@ -461,18 +444,18 @@
       console.log("Backend response:", out);
 
       if (out.ok) {
-        const contact = out.phone
+        const contactLine = out.phone
           ? 'Phone: ' + out.phone
           : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('ok', '✓ YOU\'RE IN!', '✓',
-          out.name, contact,
+          out.name, contactLine,
           'Boom. You\'re checked in and all geared up for confab! ★✦');
       } else if (out.reason === 'already') {
-        const contact = out.phone
+        const contactLine = out.phone
           ? 'Phone: ' + out.phone
           : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('warn', '⚠ ALREADY CHECKED IN', '⚠',
-          out.name || name, contact,
+          out.name || name, contactLine,
           'You\'re already on the list and ready to go. ✦');
       } else if (out.reason === 'not_found') {
         showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
@@ -494,12 +477,9 @@
   document.getElementById('btn-checkin').addEventListener('click', handleSubmit);
 
   document.getElementById('c-name').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('c-phone').focus(); }
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('c-contact').focus(); }
   });
-  document.getElementById('c-phone').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('c-email').focus(); }
-  });
-  document.getElementById('c-email').addEventListener('keydown', function(e) {
+  document.getElementById('c-contact').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') { e.preventDefault(); handleSubmit(); }
   });
 })();
