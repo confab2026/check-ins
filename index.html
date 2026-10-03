@@ -124,6 +124,125 @@
     color: var(--navy); margin-bottom: 14px; line-height: 1.5; letter-spacing: 0.5px;
   }
 
+  /* ============================================================
+     TALLY / NEW REGISTRATION CALLOUT
+     ============================================================ */
+  .newbie-box {
+    background: var(--yellow);
+    border: 3px solid var(--navy);
+    box-shadow: 7px 7px 0 var(--navy);
+    padding: 22px 22px 24px;
+    margin-bottom: 26px;
+    position: relative;
+    text-align: center;
+  }
+  .newbie-box::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: 20px;
+    width: 60px; height: 8px;
+    background: var(--pink);
+    border: 2px solid var(--navy);
+    transform: rotate(3deg);
+  }
+  .newbie-headline {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .newbie-copy {
+    font-family: 'VT323', monospace;
+    font-size: 21px;
+    color: var(--navy);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    margin-bottom: 18px;
+  }
+  .newbie-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    padding: 18px 22px;
+    background: var(--navy);
+    color: var(--yellow);
+    border: 3px solid var(--navy);
+    box-shadow: 5px 5px 0 var(--pink);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 100%;
+    min-height: 60px;
+    line-height: 1.4;
+    gap: 8px;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.12s, color 0.12s;
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  .newbie-btn .star-icon { color: var(--pink); font-size: 14px; }
+  .newbie-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--pink);
+  }
+  @media (hover: hover) {
+    .newbie-btn:hover {
+      background: var(--pink);
+      color: var(--white);
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--navy);
+    }
+    .newbie-btn:hover .star-icon { color: var(--yellow); }
+  }
+
+  /* ============================================================
+     HIGHLIGHTED "TELL THE CREW" NOTE
+     ============================================================ */
+  .crew-note {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: var(--navy);
+    border: 3px solid var(--navy);
+    box-shadow: 5px 5px 0 var(--pink);
+    text-align: center;
+    position: relative;
+  }
+  .crew-note .crew-headline {
+    display: block;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--yellow);
+    letter-spacing: 1.5px;
+    line-height: 1.7;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .crew-note .crew-copy {
+    display: block;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+  }
+  .crew-note .crew-copy strong {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  /* Small version used inside the result CTA */
+  .crew-note.compact {
+    margin-top: 16px;
+    padding: 14px 16px;
+    box-shadow: 4px 4px 0 var(--pink);
+  }
+  .crew-note.compact .crew-headline { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 6px; }
+  .crew-note.compact .crew-copy { font-size: 18px; }
+
   .field { margin-bottom: 22px; }
   .label {
     display: block;
@@ -235,6 +354,25 @@
   .result.warn { border-color: var(--yellow); box-shadow: 7px 7px 0 var(--yellow), 0 0 32px rgba(255, 217, 61, 0.55); }
   .result.warn .r-title, .result.warn .r-icon { color: var(--navy); }
 
+  /* Inline CTA that appears inside the result box (e.g. after "user not found") */
+  .result-cta {
+    display: none;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 2px dashed var(--navy);
+  }
+  .result-cta.show { display: block; }
+  .result-cta p {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+  .result-cta .newbie-btn { font-size: 10px; min-height: 58px; padding: 16px 18px; }
+
   .status-line {
     font-family: 'VT323', monospace; font-size: 20px;
     color: var(--soft-navy); text-align: center;
@@ -263,6 +401,17 @@
     .box h2 { font-size: 10px; padding-bottom: 12px; margin-bottom: 14px; }
     .box p { font-size: 22px; }
     .box::before { width: 48px; height: 7px; left: 16px; }
+    .newbie-box { padding: 20px 18px 22px; margin-bottom: 22px; }
+    .newbie-box::before { width: 48px; height: 7px; left: 16px; }
+    .newbie-headline { font-size: 10px; letter-spacing: 1.2px; }
+    .newbie-copy { font-size: 20px; }
+    .newbie-btn { font-size: 10px; padding: 18px 18px; min-height: 60px; }
+    .crew-note { padding: 14px 16px; margin-top: 16px; }
+    .crew-note .crew-headline { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 6px; }
+    .crew-note .crew-copy { font-size: 18px; }
+    .crew-note.compact { padding: 12px 14px; }
+    .crew-note.compact .crew-headline { font-size: 9px; }
+    .crew-note.compact .crew-copy { font-size: 17px; }
     .field { margin-bottom: 20px; }
     .label { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
     .input { padding: 16px 16px; font-size: 30px; min-height: 62px; }
@@ -274,6 +423,7 @@
     .result .r-name { font-size: 22px; }
     .result .r-phone { font-size: 20px; }
     .result .r-note { font-size: 19px; margin-top: 10px; }
+    .result-cta p { font-size: 19px; }
     .status-line { font-size: 19px; }
     .footer { font-size: 19px; margin-top: 36px; }
     .star { font-size: 14px; }
@@ -288,6 +438,13 @@
     .sangath, .presents { font-size: 9px; letter-spacing: 2px; }
     .subtitle { font-size: 10px; letter-spacing: 1.5px; }
     .box { padding: 20px 16px; }
+    .newbie-box { padding: 18px 14px 20px; }
+    .newbie-headline { font-size: 9px; letter-spacing: 1px; }
+    .newbie-copy { font-size: 19px; }
+    .newbie-btn { font-size: 9px; padding: 16px 14px; min-height: 58px; }
+    .crew-note { padding: 12px 14px; }
+    .crew-note .crew-headline { font-size: 9px; letter-spacing: 1px; }
+    .crew-note .crew-copy { font-size: 17px; }
     .label { font-size: 10px; letter-spacing: 0.8px; }
     .input { font-size: 28px; min-height: 58px; padding: 14px 14px; }
     .btn { font-size: 10px; padding: 20px 14px; min-height: 62px; }
@@ -331,12 +488,26 @@
 
   <div class="view active" id="view-attendee">
 
+    <!-- Inline result (green = ok, red = error, yellow = warn) -->
     <div class="result" id="checkin-result">
       <div class="r-icon" id="checkin-icon"></div>
       <div class="r-title" id="checkin-title"></div>
       <div class="r-name" id="checkin-name"></div>
       <div class="r-phone" id="checkin-phone"></div>
       <div class="r-note" id="checkin-note"></div>
+
+      <!-- Tally fallback shown when user isn't found or on connection error -->
+      <div class="result-cta" id="checkin-result-cta">
+        <p>Not on our list yet? Sign up on the spot and check in right here.</p>
+        <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
+          <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
+        </a>
+
+        <div class="crew-note compact">
+          <span class="crew-headline">Important Step</span>
+          <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong> to show you've registered on the spot. They'll guide you to the registration desk and hand you your attendee kit!</span>
+        </div>
+      </div>
     </div>
 
     <div class="box" id="checkin-form-box">
@@ -354,6 +525,20 @@
 
       <button class="btn" id="btn-checkin" type="button"><span class="star-icon">✦</span> Check Me In <span class="star-icon">✦</span></button>
       <div class="status-line" id="attendee-status"></div>
+    </div>
+
+    <!-- Newbie callout visible on the main page -->
+    <div class="newbie-box" id="newbie-box">
+      <p class="newbie-headline"><span class="star-icon" style="color: var(--pink);">★</span> Not registered yet? <span class="star-icon" style="color: var(--pink);">★</span></p>
+      <p class="newbie-copy">No worries! You can still sign up on the spot and check in right here.</p>
+      <a class="newbie-btn" href="https://tally.so/r/VLgzk6" target="_blank" rel="noopener">
+        <span class="star-icon">★</span> REGISTER ON THE SPOT <span class="star-icon">★</span>
+      </a>
+
+      <div class="crew-note">
+        <span class="crew-headline">Important Step</span>
+        <span class="crew-copy">After you submit the form, <strong>show the Tally confirmation screen to our crew</strong> to show you've registered on the spot. They will walk you to the registration desk to receive your attendee kit!</span>
+      </div>
     </div>
 
   </div>
@@ -391,7 +576,7 @@
     return await res.json();
   }
 
-  function showCheckInResult(kind, title, icon, name, contact, note) {
+  function showCheckInResult(kind, title, icon, name, contact, note, showCta) {
     const box = document.getElementById('checkin-result');
     document.getElementById('checkin-title').textContent = title;
     document.getElementById('checkin-icon').textContent = icon || '';
@@ -400,6 +585,11 @@
     document.getElementById('checkin-note').textContent = note || '';
     box.classList.remove('ok', 'err', 'warn');
     box.classList.add(kind, 'show');
+
+    const cta = document.getElementById('checkin-result-cta');
+    if (showCta) cta.classList.add('show');
+    else cta.classList.remove('show');
+
     document.getElementById('checkin-form-box').style.display = 'none';
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -421,13 +611,13 @@
 
     if (!name) {
       showCheckInResult('err', '✗ OOPS!', '✗', '', '',
-        'Please enter your name. ★');
+        'Please enter your name. ★', false);
       return;
     }
 
     if (!contact) {
       showCheckInResult('err', '✗ MISSING CONTACT', '✗', '', '',
-        'Please enter either your phone number OR your email. ★');
+        'Please enter either your phone number OR your email. ★', false);
       return;
     }
 
@@ -449,25 +639,30 @@
           : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('ok', '✓ YOU\'RE IN!', '✓',
           out.name, contactLine,
-          'Boom. You\'re checked in and all geared up for confab! ★✦');
+          'Boom. You\'re checked in and all geared up for confab! ★✦',
+          false);
       } else if (out.reason === 'already') {
         const contactLine = out.phone
           ? 'Phone: ' + out.phone
           : (out.email ? 'Email: ' + out.email : '');
         showCheckInResult('warn', '⚠ ALREADY CHECKED IN', '⚠',
           out.name || name, contactLine,
-          'You\'re already on the list and ready to go. ✦');
+          'You\'re already on the list and ready to go. ✦',
+          false);
       } else if (out.reason === 'not_found') {
         showCheckInResult('err', '✗ USER NOT FOUND', '✗', '', '',
-          'Couldn\'t find that name and contact combo. Double check your details, or pop by the registration desk. ★');
+          'Couldn\'t find that name and contact combo. If you\'re new, register on the spot below.',
+          true);
       } else {
         showCheckInResult('err', '✗ SOMETHING WENT WRONG', '✗', '', '',
-          (out.message || 'Something glitched on our end. Try again, or ask at the registration desk. ★'));
+          (out.message || 'Something glitched on our end. Try again, or ask at the registration desk. ★'),
+          false);
       }
     } catch (err) {
       console.error("Fetch error:", err);
       showCheckInResult('err', '✗ CONNECTION ERROR', '✗', '', '',
-        'Couldn\'t reach the check-in server. Please show this at the registration desk. ★');
+        'Couldn\'t reach the check-in server. If you\'re new, register on the spot below.',
+        true);
     } finally {
       btn.disabled = false;
       setStatus('');
